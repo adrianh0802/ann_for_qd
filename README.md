@@ -1,2 +1,3 @@
-# ann_for_qd
-Programme, welche in der Bachelorarbeit "Machine Learning in der Quantendynamik" erstellt wurden
+# ann_for_qd - Programme für die Bachelorarbeit "Machine Learning in der Quantendynamik"
+In diesem Repository sind alle verwendeten neuronalen Netze vorhanden sowie die Programme, wie diese trainiert wurden. 
+Diese sind Unterteilt in die verschiedenen genutzen Netze (3-Site, 10-Site und QSD), wobei diese nochmals unterteilt sind in einen Teil, wo die Programme für das Training eines neuronalen Netzes aufgelistet sind (Ordner Training) und einen Ordner, bei dem die Evaluation/Simulation mithilfe des neuronalen Netzes durchgeführt wird. Neben diesen Ordner existieren weiterhin Ordner für den Vergleich der neuronalen Netze (Abschnitt 3.5.1 - Vergleich Netze) sowie die Untersuchung der Performance der neuronalen Netze bei der Zeitentwicklung in Abhängigkeit von der Anzahl der Sites (Abschnitt 3.5.2).
