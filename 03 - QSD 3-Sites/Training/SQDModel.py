@@ -57,7 +57,6 @@ class Net(nn.Module):
         self.hidden3 = nn.Linear(N_hidden_neur, N_hidden_neur)
         self.hidden4 = nn.Linear(N_hidden_neur, N_hidden_neur)
         self.hidden5 = nn.Linear(N_hidden_neur, N_hidden_neur)
-        self.hidden6 = nn.Linear(N_hidden_neur, N_hidden_neur)
         self.out = nn.Linear(N_hidden_neur, N_output)
         self.relu = nn.ReLU()
 
@@ -71,8 +70,6 @@ class Net(nn.Module):
         x = self.hidden4(x)
         x = self.relu(x)
         x = self.hidden5(x)
-        x = self.relu(x)
-        x = self.hidden6(x)
         x = self.out(x)
         return x
 
