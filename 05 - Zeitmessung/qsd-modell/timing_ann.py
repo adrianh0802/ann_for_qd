@@ -18,13 +18,7 @@ class Net(nn.Module):
         self.relu = nn.ReLU
         self.inp = nn.Linear(N_input, N_hidden)
         self.hidden_layers = nn.Sequential( *[nn.Sequential( *[nn.Linear(N_hidden, N_hidden), self.relu()] ) for _ in range(N_hidden_layers-1)], nn.Linear(N_hidden, N_hidden))
-        #self.layer_norm1 = nn.LayerNorm(N_hidden)
-        #self.layer_norm2 = nn.LayerNorm(N_hidden)
-        #self.layer_norm3 = nn.LayerNorm(N_hidden)
-        #self.drop = nn.Dropout(0.2)
         self.out = nn.Linear(N_hidden, N_output)
-        #self.Lrelu = nn.LeakyReLU()
-        #self.tanh = nn.Tanh()
 
     def forward(self, x):
         x = self.inp(x)
