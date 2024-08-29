@@ -3,9 +3,6 @@ from numpy.random import uniform
 class System:
     # Parameter des Konstruktors
     # vnm_r : Wechselwirkung von nächsten Nachbarn
-    # sx_r : Standardabweichung der Gaußkurve 
-    # mu_r : Mittelwert der Gaußkurve
-    # width: Breite des sin²(x)-Potentials - Abstand Maximum und Nullstelle
     # e0_r : Amplitude des Potentials
     # T_r : Periodendauer des Potentials
     # t0_r : Offset im Potential: e0*(sin²(b*(x-c))*sin(2*pi/T * (t+t0)))
@@ -24,31 +21,11 @@ class System:
         #self.rand_const = np.random.uniform(-1,1)
         self.T = np.round(uniform(low=T_r[0], high=T_r[1]), 5)
         self.t0 = np.round(uniform(low=t0_r[0], high=t0_r[1]), 5)
-        '''
-        self.sx = np.round(uniform(low=sx_r[0], high=sx_r[1]), 5)
-        self.mu = np.round(uniform(low=mu_r[0], high=mu_r[1]), 5)
-        self.k = np.round(uniform(low=k_r[0], high=k_r[1]), 5)
-        '''
-        #self.dx = dx
         self.dt = dt
-        #self.L = L
         self.N = N
-        #x = np.arange(0, 3)
-        # Anfangszustand - Gaußsches-Wellenpaket
-        #psi0 = np.exp(-(x-self.mu)**2/(2*self.sx**2))*np.exp(-1j*self.k*x) 
-        #norm = np.sum(np.abs(psi0)**2)
         self.num = sys_n
         self.psi0 = np.zeros(N).astype(np.complex64)
         self.psi0[0] = 1+0j
-        
-        '''
-        for i in range(N):
-            self.psi0[i] = np.random.uniform(-1, 1) + 1j * np.random.uniform(-1, 1)
-        #self.psi0[0] = np.random.uniform(-1, 1) + 1j * np.random.uniform(-1, 1)
-        #self.psi0[1] = np.random.uniform(-0.2, 0.2) + 1j*np.random.uniform(-0.2, 0.2)
-        #self.psi0[2] = np.random.uniform(-1, 1) + 1j * np.random.uniform(-1, 1)
-        self.psi0 = self.psi0 / np.sqrt(np.sum(np.abs(self.psi0)**2))
-        '''
         
 
 
