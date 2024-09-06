@@ -1,10 +1,11 @@
 from System import SQDSystem
 import numpy as np
 from tqdm import tqdm
+import numpy.random as rnd
 # import multiprocessing as mp
 
 # import preprocess
-n_systems = 5*10 ** 5
+n_systems = 2*10 ** 4
 systems = []
 num_workers = 1
 
@@ -13,27 +14,22 @@ def calc_system(system, prop_z):
     if prop_z:
         system.prop_z()
     temp_inp = system.get_neuron_input()
-    with open("Train_Data/data_input2.dat", "a") as f:
+    with open("Train_Data/data_input.dat", "a") as f:
         f.write(";".join([f"{temp_inp[elem]}" for elem in range(0, len(temp_inp))]) + "\n")
     system.propagate_psi(no_init=False)
     temp_out = system.get_psi_net()
-    with open("Train_Data/data_output2.dat", "a") as f:
+    with open("Train_Data/data_output.dat", "a") as f:
         f.write(";".join([f"{temp_out[elem]}" for elem in range(0, len(temp_out))]) + "\n")
     # psi_t = np.concatenate((psi_t, np.array([psi])), axis=0)
 
 
 # n zufällige Systeme erstellen
 for i in tqdm(range(n_systems)):
-    if i <= 0.6*n_systems:
-        # parameter: N, vmn, en, gamma, Gamma
-        system = SQDSystem(10, 5, 1,5, 10)
-        calc_system(system, True)
-        del system
-    else:
-        # parameter: N, vmn, en, gamma, Gamma
-        system = SQDSystem(10, 5, 1,5, 10)
-        calc_system(system, False)
-        del system
+    # parameter: N, vmn, en, gamma, Gamma
+    system = SQDSystem(3, 2, 0, 1, 1)
+    #times_p_z = rnd.randint(0,100)
+    calc_system(system, True)
+    del system
 
 
 '''
