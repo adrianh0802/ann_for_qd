@@ -78,23 +78,6 @@ class Net(nn.Module):
 def calc_norm(psi_t):
     return torch.sum(psi_t ** 2)
 
-'''
-def evaluate(test_dataloader, n):
-    with torch.no_grad():
-        loss_wp = 0
-        for it, (psi_in, psi_out) in enumerate(test_dataloader):
-            psi_in = psi_in.to(device)
-            psi_out = psi_out.to(device)
-            psi_pred = model(psi_in)
-        
-            for j in range(psi_out.shape[0]):
-                norm = calc_norm(psi_pred[j, :].detach())
-                psi_pred[j, :] = psi_pred[j, :] / torch.sqrt(norm)
-            
-            loss = criterion(psi_pred, psi_out)
-            loss_wp += loss.item()
-        return loss_wp
-'''
 def prepare_dataloader(dataset: Dataset, batch_size: int):
     return DataLoader(
         dataset,
@@ -146,17 +129,6 @@ class Trainer:
             epoch_loss += loss.item()
         return epoch_loss/len(self.train_data)
 
-    '''    
-    def _eval(self):
-        self.model.module.eval()
-        with torch.no_grad():
-            loss_epoch = 0
-            for source, target in self.test_data:
-                source = source.to(device=self.gpu_id)
-                target = target.to(device=self.gpu_id)
-                loss = self._run_batch(source, target)
-                loss_epoch += loss.item()
-        return loss_epoch/len(self.test_data)'''
 
     def _save_checkpoint(self, epoch):
         ckp = self.model.module.state_dict()
@@ -166,15 +138,6 @@ class Trainer:
     def train(self, start_epoch, end_epoch):
         for epoch in tqdm(range(start_epoch, end_epoch)):
             loss = self._run_epoch(epoch)
-            '''
-            if self.gpu_id == 0:
-                mseloss = self._eval()
-                self.model.train()
-                with open("test_losses.csv", "a") as f:
-                    f.write(f"{mseloss:.15f}\n")
-                if (epoch+1) % self.save_every == 0:
-                    print(f"Loss on Test-Data at Epoch {epoch+1}: {mseloss:.15f}")
-            '''
             if self.gpu_id == 0 and (epoch+1) % self.save_every == 0:
             # self.gpu_id == 0 ist als bedingung vorgegeben, da alle GPU's die gleichen Netze besitzen (redundanz vermeiden)
                 print(f"Training-Loss in Epoch {epoch+1}: {loss/2:.20f}")
@@ -195,7 +158,7 @@ def main(rank, world_size, save_every,  train_dataset, model, optimizer, start_e
 
 if __name__ == '__main__':
     import sys
-    epochs = int(sys.argv[1])
+    epochs_per_size = int(sys.argv[1])
     save_every = int(sys.argv[2])
     train_input = sys.argv[3]
     train_output = sys.argv[4]
@@ -211,6 +174,6 @@ if __name__ == '__main__':
         if batch_size < 8192 and i != 0:
             batch_size *= 2
         print(f"Batch-Size: {int(batch_size)}")
-        mp.spawn(main, args=(world_size, save_every, dataset, model, optimizer, i*epochs, (i+1)*epochs, batch_size),
+        mp.spawn(main, args=(world_size, save_every, dataset, model, optimizer, i*epochs_per_size, (i+1)*epochs_per_size, batch_size),
                  nprocs=world_size)
 
